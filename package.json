@@ -1,0 +1,25 @@
+{
+  "name": "nodejsecommerce",
+  "version": "1.0.0",
+  "description": "This is an ecommerce website",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ronald132/NodeJSCommerce.git"
+  },
+  "author": "Ronald",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ronald132/NodeJSCommerce/issues"
+  },
+  "homepage": "https://github.com/ronald132/NodeJSCommerce#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "express": "^4.13.4",
+    "mongoose": "^4.4.19",
+    "morgan": "^1.7.0"
+  }
+}
