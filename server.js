@@ -4,6 +4,9 @@ var mongoose = require('mongoose'); // this is the drive to mongodb
 var bodyParser = require('body-parser'); //take the body of your request and parse it
 var ejs = require('ejs'); // for templating engine
 var engine = require('ejs-mate'); //extention of ejs
+var session = require('express-session'); //session stored on server
+var cookieParser = require('cookie-parser'); //stored on client browser
+var flash = require('express-flash');
 
 var User = require('./models/user'); //this to include the user model
 
@@ -22,6 +25,14 @@ app.use(express.static(__dirname + '/public'));
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser());
+app.use(session({
+  resave: true,
+  saveUninitialized: true,
+  secret: "Ronald@Situmorang"
+}));
+app.use(flash());
+
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
 
