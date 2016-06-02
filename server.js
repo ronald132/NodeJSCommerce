@@ -7,12 +7,14 @@ var engine = require('ejs-mate'); //extention of ejs
 var session = require('express-session'); //session stored on server
 var cookieParser = require('cookie-parser'); //stored on client browser
 var flash = require('express-flash');
-
+var mongoStore = require('connect-mongo')(session); //to handle session objects
+var passport = require('passport'); // to handle authentication: local, fb, oauth2
+var secret = require('./config/secret');
 var User = require('./models/user'); //this to include the user model
 
 var app = express();
 
-mongoose.connect('mongodb://ronald132:Password132@ds051953.mlab.com:51953/ecommerce', function(err){
+mongoose.connect(secret.database, function(err){
   if(err) {
     console.log(err);
   }else{
@@ -29,9 +31,19 @@ app.use(cookieParser());
 app.use(session({
   resave: true,
   saveUninitialized: true,
-  secret: "Ronald@Situmorang"
+  secret: secret.secretKey,
+  store: new mongoStore({url: secret.database, autoReconnect:true})
 }));
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+
+//with this every routes will have user object
+app.use(function(req, res, next){
+  res.locals.user = req.user;
+  next();
+});
+
 
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
@@ -42,7 +54,7 @@ app.use(mainRoutes);
 app.use(userRoutes);
 
 //start server at port 3000
-app.listen(3000, function(err){
+app.listen(secret.port, function(err){
   if(err) throw err;
-  console.log("Server is running");
+  console.log("Server is running on port " + secret.port);
 });
