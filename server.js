@@ -11,6 +11,7 @@ var mongoStore = require('connect-mongo')(session); //to handle session objects
 var passport = require('passport'); // to handle authentication: local, fb, oauth2
 var secret = require('./config/secret');
 var User = require('./models/user'); //this to include the user model
+var Category = require('./models/category');
 
 var app = express();
 
@@ -44,6 +45,13 @@ app.use(function(req, res, next){
   next();
 });
 
+app.use(function(req, res, next){
+  Category.find({}, function(err, categories){
+    if(err) return next(err);
+    res.locals.categories = categories;
+    next();
+  })
+});
 
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
